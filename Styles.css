@@ -1,0 +1,180 @@
+:root {
+    
+}
+
+body {
+background-color:  #0088ff;
+background-attachment: fixed;
+}
+
+#title{
+  width:100%;
+  border-bottom-style: solid;
+  background-color:  #000000;
+  font-family:'Courier New', Courier, monospace;
+  box-shadow: 0px -7px #a49e68; 
+  font-size: 24px;
+  color:#0088ff;
+  padding: 2px;
+}
+
+.bigContainer{
+  float: left;
+  padding: 10px;
+  width:100%;
+}
+
+.bigContainer.left{
+  max-width:70%;
+  
+}
+
+.bigContainer.right{
+  max-width:25%;
+  
+}
+
+.header {
+background-color: #ffffff;
+color: white;
+text-align: center;
+padding: 2px;
+}
+
+.rectangle {
+height: 420px;
+width: 100%;
+background-color: #000000;
+box-shadow: 0px -7px #a49e68;
+padding:2px;
+margin-top: 8px;
+}
+
+.timeContainer{
+  text-align: center;
+  transform: translateY(-8px);
+  display: inline-block;
+  background-color: #000000;
+  box-shadow: 0px -7px #a49e68;
+  height: 40px;
+  width: 25%;
+}
+
+#timer {
+  color: #e43215;
+  transform: translateY(15px);
+  display: inline;
+  font-size: 28px;
+  font-family:'Courier New', Courier, monospace;
+  padding: 5px 0;
+}
+
+#duration {
+  color: #0088ff;
+  transform: translateY(15px);
+  display: inline;
+  font-family:'Courier New', Courier, monospace;
+  font-size: 28px;
+  padding: 5px 0;
+}
+
+#progressBack{
+ 
+  background-color: #000000;
+  box-shadow: 0px -7px #a49e68;
+  height: 26px;
+  width: 100%;
+  margin-top: 10px;
+  padding:2px;
+}
+
+#progress{
+  --barSize: 0%;
+  background-color: #0088ff;
+  font-size: 20px;
+  height: 5px;
+  width: var(--barSize);
+  padding: 4px 0;
+  transform: translateY(50%);
+
+}
+
+.buttonContainer{
+  width: 70%;
+  display: inline-block;
+
+}
+
+.btnBack{
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  transform: translateY(10px);
+
+}
+
+.btnBack img{
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+
+}
+
+.btnBack .btn {
+  position: absolute;
+    display: inline-block;
+  width: 100%;
+  transform: translate(-100%, 0%);
+
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn:hover {
+filter: brightness(.8);
+translate: 0px 2px;
+
+}
+
+.btn:active {
+translate: 0px 8px;
+filter: brightness(.5);
+
+}
+
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+content: "";
+clear: both;
+display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+background-color: #3e8e41;
+}
+
+#playBtn{
+
+}
+
+.user-upload{
+}
+
+#playlist{
+  width:100%;
+  text-align: left;
+  display:inline-block;
+  background-color: #000000;
+  box-shadow: 0px -7px #a49e68; 
+  font-size: 24px;
+  font-family:'Courier New', Courier, monospace;
+  }
+  #list{
+    position: relative;
+    padding: 1px;
+    color: #0088ff;
+    
+  }
