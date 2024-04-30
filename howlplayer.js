@@ -144,6 +144,11 @@ var player = new Player([
     title: 'Bad to The Bone',
     file: 'bad-to-the-bone',
     howl: null
+  },
+  { 
+    title: 'Gymnopede',
+    file: 'Erik_Satie_-_Gymnopedie_No.1',
+    howl: null
   }
 ]);
 
