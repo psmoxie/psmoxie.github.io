@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Floating Hearts with Gravity Effect">
-    <title>Floating Hearts</title>
+    <title>Valentine's Proposal</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="hideTicket();">
     <canvas id="canvas"></canvas>
+    <div id="splashScreen">
+        <h1 id="splashText">Will you be my Valentine?<span class="heart">❤</span></h1>
+        <div class="button-container">
+            <button id="yesButton">Yes!</button>
+            <button id="noButton">No</button>
+        </div>
+    </div>
+
+    <div id="ticketScreen">
+        <span class="ticketText"<h1 id="ticketText">Juliette Servant-Dugas has been awarded 
+        a free ticket to watch a movie/series 
+    of their choice and eat lots of snacks❤
+ps. I love you a lot :D</h1></span>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

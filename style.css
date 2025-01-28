@@ -2,12 +2,151 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: #000;
+    background: linear-gradient(135deg, #2a2a2a 0%, #404040 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-attachment: fixed;
+    perspective: 1000px;
+}
+
+#splashScreen {
+    background: rgba(0, 0, 0, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5),
+                0 0 0 2px rgba(255, 255, 255, 0.1),
+                0 0 100px rgba(255, 50, 100, 0.1) inset;
+    backdrop-filter: blur(5px);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    animation: appear 0.5s ease forwards;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin: auto;
+    transform-origin: center center;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#splashText {
+    color: #ff6b8d;
+    font-family: Georgia, serif;
+    font-size: 3em;
+    text-shadow: 0 2px 4px rgba(255, 107, 141, 0.3);
+    margin: 0 0 1.5em 0;
+    line-height: 1.4;
+}
+
+#ticketText {
+    color: #ff6b8d;
+    font-family: Georgia, serif;
+    font-size: 3em;
+    text-shadow: 0 2px 4px rgba(255, 107, 141, 0.3);
+    margin: 0 0 1.5em 1em;
+    line-height: 1.4;
+    white-space: pre-line;
+}
+
+.heart {
+    display: inline-block;
+    margin-left: 0.3em;
+    animation: heartbeat 2s infinite;
+}
+.ticketText {
+    display: inline-block;
+    margin-left: 0.3em;
+    animation: staylol 2s infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.3); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
+@keyframes staylol {
+   from { opacity: 1; }
+    to { opacity: 1; }
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2em;
+    position: relative;
+    width: 100%;
+}
+
+button {
+    padding: 18px 35px;
+    font-size: 1.4em;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: Georgia, serif;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+#yesButton {
+    background: linear-gradient(145deg, #ff6b8d, #ff3366);
+    color: white;
+}
+
+#yesButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+}
+
+#yesButton::after {
+    content: '❤';
+    margin-left: 8px;
+    display: inline-block;
+    animation: float 2s ease-in-out infinite;
+}
+
+#noButton {
+    background: linear-gradient(145deg, #a0a0a0, #808080);
+    color: white;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 canvas {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    touch-action: none; /* Prevent scrolling on mobile */
+    touch-action: none;
+    display: none;
+    will-change: transform, opacity;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    #splashText {
+        font-size: 2em;
+    }
+    
+    button {
+        padding: 15px 25px;
+        font-size: 1.2em;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        gap: 15px;
+    }
 }
