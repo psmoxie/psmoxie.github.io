@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    touch-action: none; /* Prevent scrolling on mobile */
+}
