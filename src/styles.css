@@ -298,14 +298,14 @@ p {
 h1 {
   margin-bottom: 24px;
   font-size: clamp(3.8rem, 10vw, 8rem);
-  line-height: 0.9;
+  line-height: 1.05;
   letter-spacing: 0;
 }
 
 h2 {
   margin-bottom: 16px;
   font-size: clamp(2rem, 5vw, 4.5rem);
-  line-height: 0.98;
+  line-height: 1.08;
   letter-spacing: 0;
 }
 
@@ -370,6 +370,17 @@ h3 {
   gap: 14px;
 }
 
+.intro-heading {
+  grid-column: 1 / -1;
+  padding: 0 0 8px;
+}
+
+.intro-heading h2 {
+  margin-bottom: 6px;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.1;
+}
+
 .intro-band article {
   min-height: 220px;
   padding: 34px 28px;
@@ -386,7 +397,7 @@ h3 {
   text-transform: uppercase;
 }
 
-.intro-band h2 {
+.intro-band h3 {
   margin: 28px 0 12px;
   font-size: 1.55rem;
 }
@@ -400,6 +411,7 @@ h3 {
 .page-title h1 {
   max-width: 920px;
   font-size: clamp(3rem, 8vw, 6.6rem);
+  line-height: 1.08;
 }
 
 .page-title p {

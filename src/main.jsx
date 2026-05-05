@@ -21,6 +21,39 @@ const botDetails = [
   'Leaves the code small enough to change without much refactoring.',
 ];
 
+const shaderPalettes = {
+  light: {
+    colors: [
+      [1.0, 0.92, 0.98, 1.0],  // soft pink-white glow
+      [1.0, 0.34, 0.76, 1.0],  // brighter neon pink
+      [0.34, 0.62, 1.0, 1.0],  // clean electric blue
+      [0.72, 0.88, 1.0, 1.0],  // soft sky blue
+    ],
+    altColors: [
+      [0.98, 0.95, 1.0, 1.0],  // pale lavender-white
+      [0.86, 0.42, 1.0, 1.0],  // soft neon purple
+      [0.42, 0.82, 1.0, 1.0],  // bright sky cyan
+      [0.94, 0.98, 1.0, 1.0],  // icy white-blue
+    ],
+    opacity: 0.85,
+  },
+  dark: {
+    colors: [
+      [0.03, 0.04, 0.10, 1.0], // deep midnight blue base
+      [1.0, 0.18, 0.72, 1.0],  // neon pink
+      [0.24, 0.56, 1.0, 1.0],  // electric blue
+      [0.52, 0.78, 1.0, 1.0],  // glowing sky blue
+    ],
+    altColors: [
+      [0.10, 0.06, 0.20, 1.0], // violet shadow
+      [0.82, 0.22, 1.0, 1.0],  // bright magenta-purple
+      [0.16, 0.78, 1.0, 1.0],  // neon cyan-blue
+      [0.28, 0.18, 0.42, 1.0], // deep purple surface
+    ],
+    opacity: 0.85,
+  },
+};
+
 function useHashRoute() {
   const getRoute = () => window.location.hash.replace('#', '') || '/';
   const [route, setRoute] = useState(getRoute);
@@ -80,17 +113,18 @@ function App() {
 
   return (
     <main>
-      <ShaderBackground />
+      <ShaderBackground theme={theme} />
       <SiteNav route={route} theme={theme} onToggleTheme={toggleTheme} />
       {route === '/projects' ? <ProjectsPage /> : <HomePage />}
     </main>
   );
 }
 
-function ShaderBackground() {
+function ShaderBackground({ theme }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    const palette = shaderPalettes[theme] || shaderPalettes.light;
     const canvas = canvasRef.current;
     const gl =
       canvas.getContext('webgl', { alpha: true, antialias: false }) ||
@@ -114,17 +148,21 @@ function ShaderBackground() {
       uniform vec2 uResolution;
       uniform float uTime;
       uniform sampler2D tex;
+      uniform vec4 uShaderColor1;
+      uniform vec4 uShaderColor2;
+      uniform vec4 uShaderColor3;
+      uniform vec4 uShaderColor4;
+      uniform vec4 uShaderAltColor1;
+      uniform vec4 uShaderAltColor2;
+      uniform vec4 uShaderAltColor3;
+      uniform vec4 uShaderAltColor4;
+      uniform float uShaderOpacity;
 
       void main() {
         vec2 uv = gl_FragCoord.xy / uResolution;
-        float time = uTime * 0.4;
-        vec2 pixelSize = max(uResolution / 4.0, vec2(1.0));
+        float time = uTime * 0.05;
+        vec2 pixelSize = max(uResolution / .5, vec2(1.0));
         vec2 uvPixel = floor(uv * pixelSize) / pixelSize;
-
-        vec4 col1 = vec4(0.510, 0.776, 0.486, 1.0);
-        vec4 col2 = vec4(0.200, 0.604, 0.318, 1.0);
-        vec4 col3 = vec4(0.145, 0.490, 0.278, 1.0);
-        vec4 col4 = vec4(0.059, 0.255, 0.251, 1.0);
 
         vec3 displace = texture2D(tex, vec2(uvPixel.x, (uvPixel.y + time) * 0.05)).xyz;
         displace *= 0.5;
@@ -138,17 +176,20 @@ function ShaderBackground() {
 
         vec4 color = texture2D(tex, uvTmp + displace.xy);
         vec4 noise = floor(color * 10.0) / 5.0;
-        vec4 dark = mix(col1, col2, uv.y);
-        vec4 bright = mix(col3, col4, uv.y);
+        float colorShift = 0.5 + 0.5 * sin(uTime * 0.035);
+        vec4 color1 = mix(uShaderColor1, uShaderAltColor1, colorShift);
+        vec4 color2 = mix(uShaderColor2, uShaderAltColor2, colorShift);
+        vec4 color3 = mix(uShaderColor3, uShaderAltColor3, colorShift);
+        vec4 color4 = mix(uShaderColor4, uShaderAltColor4, colorShift);
+        vec4 dark = mix(color1, color2, uv.y);
+        vec4 bright = mix(color3, color4, uv.y);
         color = mix(dark, bright, noise);
 
         float invUv = 1.0 - uvPixel.y;
         color.rgb -= 0.45 * pow(uvPixel.y, 8.0);
         color.a -= 0.2 * pow(uvPixel.y, 8.0);
-        color += pow(invUv, 8.0);
-        color.a -= 0.2;
 
-        gl_FragColor = vec4(color.rgb, clamp(color.a, 0.0, 0.72));
+        gl_FragColor = vec4(color.rgb, clamp(color.a, 0.0, uShaderOpacity));
       }
     `;
 
@@ -195,6 +236,19 @@ function ShaderBackground() {
     const resolutionLocation = gl.getUniformLocation(program, 'uResolution');
     const timeLocation = gl.getUniformLocation(program, 'uTime');
     const textureLocation = gl.getUniformLocation(program, 'tex');
+    const shaderColorLocations = [
+      gl.getUniformLocation(program, 'uShaderColor1'),
+      gl.getUniformLocation(program, 'uShaderColor2'),
+      gl.getUniformLocation(program, 'uShaderColor3'),
+      gl.getUniformLocation(program, 'uShaderColor4'),
+    ];
+    const shaderAltColorLocations = [
+      gl.getUniformLocation(program, 'uShaderAltColor1'),
+      gl.getUniformLocation(program, 'uShaderAltColor2'),
+      gl.getUniformLocation(program, 'uShaderAltColor3'),
+      gl.getUniformLocation(program, 'uShaderAltColor4'),
+    ];
+    const shaderOpacityLocation = gl.getUniformLocation(program, 'uShaderOpacity');
     const texture = gl.createTexture();
 
     gl.useProgram(program);
@@ -218,6 +272,13 @@ function ShaderBackground() {
       new Uint8Array([96, 150, 112, 255]),
     );
     gl.uniform1i(textureLocation, 0);
+    palette.colors.forEach((color, index) => {
+      gl.uniform4fv(shaderColorLocations[index], color);
+    });
+    palette.altColors.forEach((color, index) => {
+      gl.uniform4fv(shaderAltColorLocations[index], color);
+    });
+    gl.uniform1f(shaderOpacityLocation, palette.opacity);
 
     let frameId = 0;
     let startTime = performance.now();
@@ -274,7 +335,7 @@ function ShaderBackground() {
       gl.deleteShader(vertexShader);
       gl.deleteShader(fragmentShader);
     };
-  }, []);
+  }, [theme]);
 
   return <canvas className="background-shader" ref={canvasRef} aria-hidden="true"></canvas>;
 }
@@ -338,21 +399,25 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="intro-band" aria-label="Areas of interest">
+      <section className="intro-band" aria-label="Work categories">
+        <div className="intro-heading">
+          <p className="eyebrow">What I work on</p>
+          <h2>Areas I am building around.</h2>
+        </div>
         <article>
           <span>01</span>
-          <h2>Systems</h2>
-          <p>Learning how software behaves close to hardware, networks, and real constraints.</p>
+          <h3>Computer engineering</h3>
+          <p>Coursework, labs, and projects involving software, hardware, and networking.</p>
         </article>
         <article>
           <span>02</span>
-          <h2>Tools</h2>
-          <p>Making small utilities when I notice something could be easier.</p>
+          <h3>Small tools</h3>
+          <p>Bots, scripts, and utilities made to solve specific problems.</p>
         </article>
         <article>
           <span>03</span>
-          <h2>Community</h2>
-          <p>Making software that fits naturally into places people already use, like Discord.</p>
+          <h3>Experiments</h3>
+          <p>Shaders, interfaces, and technical ideas I wanted to try for myself.</p>
         </article>
       </section>
     </>
