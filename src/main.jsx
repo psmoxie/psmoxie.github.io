@@ -34,13 +34,54 @@ function useHashRoute() {
   return route;
 }
 
+function getSystemTheme() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getInitialTheme() {
+  const savedTheme = window.localStorage.getItem('theme');
+  return savedTheme || getSystemTheme();
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const onSystemThemeChange = () => {
+      if (!window.localStorage.getItem('theme')) {
+        setTheme(getSystemTheme());
+      }
+    };
+
+    mediaQuery.addEventListener('change', onSystemThemeChange);
+    return () => mediaQuery.removeEventListener('change', onSystemThemeChange);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme((currentTheme) => {
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      window.localStorage.setItem('theme', nextTheme);
+      return nextTheme;
+    });
+  };
+
+  return { theme, toggleTheme };
+}
+
 function App() {
   const route = useHashRoute();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <main>
       <ShaderBackground />
-      <SiteNav route={route} />
+      <SiteNav route={route} theme={theme} onToggleTheme={toggleTheme} />
       {route === '/projects' ? <ProjectsPage /> : <HomePage />}
     </main>
   );
@@ -238,7 +279,7 @@ function ShaderBackground() {
   return <canvas className="background-shader" ref={canvasRef} aria-hidden="true"></canvas>;
 }
 
-function SiteNav({ route }) {
+function SiteNav({ route, theme, onToggleTheme }) {
   return (
     <header className="site-header">
       <a className="brand" href="#/" aria-label="Harrison Ford-Schultz home">
@@ -256,6 +297,9 @@ function SiteNav({ route }) {
         <a href={githubUrl} target="_blank" rel="noreferrer">
           GitHub
         </a>
+        <button className="theme-toggle" type="button" onClick={onToggleTheme}>
+          {theme === 'dark' ? 'Light' : 'Dark'}
+        </button>
       </nav>
     </header>
   );

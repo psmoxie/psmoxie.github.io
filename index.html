@@ -8,6 +8,15 @@
       content="Harrison Ford-Schultz, computer engineering student at Algonquin College."
     />
     <title>Harrison Ford-Schultz</title>
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem('theme');
+        const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const theme = savedTheme || systemTheme;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,17 +1,95 @@
 :root {
   color: #101415;
   background: #eef2ef;
+  --page-bg:
+    radial-gradient(circle at 12% 18%, rgba(73, 124, 255, 0.18), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(255, 92, 92, 0.14), transparent 28%),
+    radial-gradient(circle at 72% 82%, rgba(55, 199, 118, 0.16), transparent 34%),
+    linear-gradient(135deg, #f4f5ef 0%, #e7eeed 48%, #f6f0e8 100%);
+  --page-overlay:
+    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.32), transparent 32%),
+    linear-gradient(180deg, rgba(238, 242, 239, 0.14), rgba(238, 242, 239, 0.48));
   --glass-bg: rgba(255, 255, 255, 0.28);
   --glass-bg-strong: rgba(255, 255, 255, 0.38);
   --glass-bg-dark: rgba(23, 29, 31, 0.3);
   --glass-border: rgba(255, 255, 255, 0.78);
   --glass-border-dark: rgba(16, 20, 21, 0.18);
+  --glass-shine-start: rgba(255, 255, 255, 0.48);
+  --glass-shine-end: rgba(255, 255, 255, 0.12);
   --glass-shadow: 0 24px 70px rgba(19, 34, 38, 0.14);
   --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --brand-border: rgba(255, 255, 255, 0.72);
+  --brand-outline: rgba(16, 20, 21, 0.16);
+  --brand-bg: rgba(255, 255, 255, 0.66);
+  --brand-text: #101415;
+  --nav-link: #5b6466;
+  --nav-active-border: rgba(255, 255, 255, 0.24);
+  --nav-active-bg: rgba(16, 20, 21, 0.88);
+  --nav-active-text: #ffffff;
+  --accent: #296f63;
+  --body-text: #4d575a;
+  --muted-text: #697174;
+  --button-primary-border: rgba(16, 20, 21, 0.76);
+  --button-primary-start: rgba(16, 20, 21, 0.92);
+  --button-primary-end: rgba(16, 20, 21, 0.74);
+  --button-primary-bg: rgba(16, 20, 21, 0.82);
+  --button-secondary-start: rgba(255, 255, 255, 0.72);
+  --button-secondary-end: rgba(255, 255, 255, 0.34);
+  --button-secondary-text: #101415;
+  --code-border: rgba(255, 255, 255, 0.62);
+  --code-outline: rgba(16, 20, 21, 0.08);
+  --code-bg: rgba(237, 240, 234, 0.72);
+  --code-text: #101415;
+  --check-bg: rgba(228, 239, 232, 0.68);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+:root[data-theme="dark"] {
+  color: #edf5ef;
+  background: #07100f;
+  --page-bg:
+    radial-gradient(circle at 12% 18%, rgba(73, 124, 255, 0.14), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(77, 220, 156, 0.1), transparent 28%),
+    radial-gradient(circle at 72% 82%, rgba(55, 199, 118, 0.16), transparent 34%),
+    linear-gradient(135deg, #07100f 0%, #10201d 48%, #071211 100%);
+  --page-overlay:
+    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(7, 16, 15, 0.18), rgba(7, 16, 15, 0.54));
+  --glass-bg: rgba(8, 18, 17, 0.54);
+  --glass-bg-strong: rgba(14, 28, 26, 0.72);
+  --glass-bg-dark: rgba(5, 12, 12, 0.66);
+  --glass-border: rgba(210, 247, 226, 0.2);
+  --glass-border-dark: rgba(0, 0, 0, 0.44);
+  --glass-shine-start: rgba(255, 255, 255, 0.1);
+  --glass-shine-end: rgba(255, 255, 255, 0.02);
+  --glass-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --brand-border: rgba(255, 255, 255, 0.72);
+  --brand-outline: rgba(0, 0, 0, 0.38);
+  --brand-bg: rgba(214, 247, 225, 0.12);
+  --brand-text: #f5fff7;
+  --nav-link: #b7c8c0;
+  --nav-active-border: rgba(210, 247, 226, 0.24);
+  --nav-active-bg: rgba(210, 247, 226, 0.14);
+  --nav-active-text: #ffffff;
+  --accent: #8de7af;
+  --body-text: #ccdad4;
+  --muted-text: #aebeb7;
+  --button-primary-border: rgba(210, 247, 226, 0.24);
+  --button-primary-start: rgba(210, 247, 226, 0.18);
+  --button-primary-end: rgba(80, 174, 119, 0.14);
+  --button-primary-bg: rgba(8, 18, 17, 0.82);
+  --button-secondary-start: rgba(255, 255, 255, 0.1);
+  --button-secondary-end: rgba(255, 255, 255, 0.03);
+  --button-secondary-text: #edf5ef;
+  --code-border: rgba(210, 247, 226, 0.22);
+  --code-outline: rgba(0, 0, 0, 0.28);
+  --code-bg: rgba(210, 247, 226, 0.12);
+  --code-text: #f4fff6;
+  --check-bg: rgba(141, 231, 175, 0.16);
 }
 
 * {
@@ -25,11 +103,7 @@ html {
 body {
   min-width: 320px;
   margin: 0;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(73, 124, 255, 0.18), transparent 32%),
-    radial-gradient(circle at 88% 12%, rgba(255, 92, 92, 0.14), transparent 28%),
-    radial-gradient(circle at 72% 82%, rgba(55, 199, 118, 0.16), transparent 34%),
-    linear-gradient(135deg, #f4f5ef 0%, #e7eeed 48%, #f6f0e8 100%);
+  background: var(--page-bg);
 }
 
 a {
@@ -40,6 +114,10 @@ a {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
 }
 
 main {
@@ -63,9 +141,7 @@ main::before {
   position: fixed;
   inset: 0;
   z-index: 1;
-  background:
-    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.32), transparent 32%),
-    linear-gradient(180deg, rgba(238, 242, 239, 0.14), rgba(238, 242, 239, 0.48));
+  background: var(--page-overlay);
   content: "";
   pointer-events: none;
 }
@@ -86,7 +162,7 @@ main::before {
   border: 1px solid var(--glass-border);
   outline: 1px solid var(--glass-border-dark);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.12)),
+    linear-gradient(135deg, var(--glass-shine-start), var(--glass-shine-end)),
     var(--glass-bg);
   box-shadow: var(--glass-shadow), var(--inner-highlight);
   backdrop-filter: blur(24px) saturate(145%);
@@ -128,11 +204,11 @@ main::before {
   width: 42px;
   height: 42px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  outline: 1px solid rgba(16, 20, 21, 0.16);
+  border: 1px solid var(--brand-border);
+  outline: 1px solid var(--brand-outline);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.66);
-  color: #101415;
+  background: var(--brand-bg);
+  color: var(--brand-text);
   font-size: 0.82rem;
   font-weight: 900;
 }
@@ -148,16 +224,33 @@ main::before {
   padding: 10px 14px;
   border: 1px solid transparent;
   border-radius: 6px;
-  color: #5b6466;
+  color: var(--nav-link);
   font-size: 0.94rem;
   font-weight: 750;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(16, 20, 21, 0.88);
-  color: #ffffff;
+  border-color: var(--nav-active-border);
+  background: var(--nav-active-bg);
+  color: var(--nav-active-text);
+}
+
+.theme-toggle {
+  min-height: 38px;
+  border: 1px solid var(--nav-active-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--nav-link);
+  cursor: pointer;
+  font-size: 0.94rem;
+  font-weight: 750;
+}
+
+.theme-toggle:hover {
+  background: var(--nav-active-bg);
+  color: var(--nav-active-text);
 }
 
 .home-hero,
@@ -188,7 +281,7 @@ main::before {
 
 .eyebrow {
   margin: 0 0 14px;
-  color: #296f63;
+  color: var(--accent);
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0;
@@ -226,13 +319,13 @@ h3 {
 .project-card p,
 .detail-list p,
 .intro-band p {
-  color: #4d575a;
+  color: var(--body-text);
   font-size: 1.06rem;
   line-height: 1.72;
 }
 
 .secondary-lede {
-  color: #697174;
+  color: var(--muted-text);
 }
 
 .hero-actions,
@@ -253,18 +346,18 @@ h3 {
 }
 
 .button.primary {
-  border-color: rgba(16, 20, 21, 0.76);
+  border-color: var(--button-primary-border);
   background:
-    linear-gradient(135deg, rgba(16, 20, 21, 0.92), rgba(16, 20, 21, 0.74)),
-    rgba(16, 20, 21, 0.82);
+    linear-gradient(135deg, var(--button-primary-start), var(--button-primary-end)),
+    var(--button-primary-bg);
   color: #ffffff;
 }
 
 .button.secondary {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.34)),
+    linear-gradient(135deg, var(--button-secondary-start), var(--button-secondary-end)),
     var(--glass-bg-strong);
-  color: #101415;
+  color: var(--button-secondary-text);
 }
 
 .button:hover {
@@ -287,7 +380,7 @@ h3 {
 .project-kicker,
 .project-meta span,
 .detail-list span {
-  color: #296f63;
+  color: var(--accent);
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -337,11 +430,11 @@ h3 {
 
 code {
   padding: 0.08em 0.28em;
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  outline: 1px solid rgba(16, 20, 21, 0.08);
+  border: 1px solid var(--code-border);
+  outline: 1px solid var(--code-outline);
   border-radius: 6px;
-  background: rgba(237, 240, 234, 0.72);
-  color: #101415;
+  background: var(--code-bg);
+  color: var(--code-text);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.92em;
 }
@@ -454,7 +547,7 @@ code {
   height: 36px;
   place-items: center;
   border-radius: 8px;
-  background: rgba(228, 239, 232, 0.68);
+  background: var(--check-bg);
 }
 
 .detail-list p {
@@ -557,5 +650,3 @@ code {
     grid-template-columns: 1fr;
   }
 }
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  outline: 1px solid rgba(16, 20, 21, 0.1);
