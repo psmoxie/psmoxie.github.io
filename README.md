@@ -2,8 +2,7 @@
 
 React + Vite personal site for GitHub Pages.
 
-The home page introduces Harrison Ford-Schultz as a computer engineering
-student at Algonquin College and includes a shader-ready visual stage. The
+Hi, my name is Harrison Ford-Schultz and this is my portfolio site! The
 projects page currently includes the
 [MC Server Tracking Discord Bot](https://github.com/psmoxie/MC-Server-Tracking-Discord-Bot)
 project.
