@@ -16,11 +16,12 @@ const projectFacts = [
 
 const botDetails = [
   'Takes a Discord command and checks the server through the mcsrvstat.us API.',
-  'Loads the Discord token from an environment variable.',
-  'Sends back a simple embed for the online or offline result.',
-  'Leaves the code small enough to change without much refactoring.',
+  'Loads the Discord token from an environment variable instead of storing it in the code.',
+  'Sends back a simple Discord embed showing whether the server is online or offline.',
+  'Keeps the code small and easy to change as the project grows.',
 ];
 
+// Tweak these palettes when the background needs a different mood.
 const shaderPalettes = {
   light: {
     colors: [
@@ -76,6 +77,7 @@ function getInitialTheme() {
   return savedTheme || getSystemTheme();
 }
 
+// Manual theme choices stick; otherwise the site follows the system preference.
 function useTheme() {
   const [theme, setTheme] = useState(getInitialTheme);
 
@@ -176,6 +178,7 @@ function ShaderBackground({ theme }) {
 
         vec4 color = texture2D(tex, uvTmp + displace.xy);
         vec4 noise = floor(color * 10.0) / 5.0;
+        // Slowly drift between the two palettes for the active theme.
         float colorShift = 0.5 + 0.5 * sin(uTime * 0.035);
         vec4 color1 = mix(uShaderColor1, uShaderAltColor1, colorShift);
         vec4 color2 = mix(uShaderColor2, uShaderAltColor2, colorShift);
@@ -185,7 +188,6 @@ function ShaderBackground({ theme }) {
         vec4 bright = mix(color3, color4, uv.y);
         color = mix(dark, bright, noise);
 
-        float invUv = 1.0 - uvPixel.y;
         color.rgb -= 0.45 * pow(uvPixel.y, 8.0);
         color.a -= 0.2 * pow(uvPixel.y, 8.0);
 
@@ -358,7 +360,12 @@ function SiteNav({ route, theme, onToggleTheme }) {
         <a href={githubUrl} target="_blank" rel="noreferrer">
           GitHub
         </a>
-        <button className="theme-toggle" type="button" onClick={onToggleTheme}>
+        <button
+          className="theme-toggle"
+          type="button"
+          onClick={onToggleTheme}
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
           {theme === 'dark' ? 'Light' : 'Dark'}
         </button>
       </nav>
@@ -371,22 +378,21 @@ function HomePage() {
     <>
       <section className="home-hero">
         <div className="hero-copy">
-          <p className="eyebrow">Computer engineering student</p>
+          <p className="eyebrow">Computer Engineering Student</p>
           <h1>Harrison Ford-Schultz</h1>
           <p className="lede">
-            I'm a computer engineering student at Algonquin College, interested in how software,
-            hardware, and networks come together to build useful things.
+            I’m a computer engineering student at Algonquin College. I’m interested in the point
+            where software, hardware, and networks meet, especially when those pieces come together
+            to make something practical.
           </p>
           <p className="lede secondary-lede">
-            I tend to enjoy projects that turn ideas into something tangible, whether that's code
-            interacting with an API, hardware reacting to signals, or small tools that remove
-            unnecessary steps from a task. This site is where I keep track of that work as it
-            evolves.
+            I like building projects that make ideas feel real: code that talks to an API, hardware
+            that responds to input, or small tools that make a task easier. This site is a place for
+            me to keep track of those projects as I keep learning and improving.
           </p>
           <p className="lede secondary-lede">
-            The background shader is part of that same idea. I didn't want the site to just be static
-            boxes and text. I wanted it to feel like something I built, not just something I wrote
-            about.
+            The animated background is part of the site too. I wanted the page to feel more like
+            something I built, not just a plain portfolio with my name on it.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#/projects">
@@ -401,23 +407,28 @@ function HomePage() {
 
       <section className="intro-band" aria-label="Work categories">
         <div className="intro-heading">
-          <p className="eyebrow">What I work on</p>
-          <h2>Areas I am building around.</h2>
+          <p className="eyebrow">What I Work On</p>
+          <h2>Areas I’m building experience in.</h2>
         </div>
         <article>
           <span>01</span>
-          <h3>Computer engineering</h3>
-          <p>Coursework, labs, and projects involving software, hardware, and networking.</p>
+          <h3>Computer Engineering</h3>
+          <p>
+            Coursework, labs, and projects involving programming, hardware, networking, and problem
+            solving.
+          </p>
         </article>
         <article>
           <span>02</span>
-          <h3>Small tools</h3>
-          <p>Bots, scripts, and utilities made to solve specific problems.</p>
+          <h3>Small Tools</h3>
+          <p>Bots, scripts, and utilities made to solve specific problems or automate simple tasks.</p>
         </article>
         <article>
           <span>03</span>
           <h3>Experiments</h3>
-          <p>Shaders, interfaces, and technical ideas I wanted to try for myself.</p>
+          <p>
+            Interfaces, shaders, and technical ideas I wanted to try while learning how they work.
+          </p>
         </article>
       </section>
     </>
@@ -429,25 +440,28 @@ function ProjectsPage() {
     <>
       <section className="page-title">
         <p className="eyebrow">Projects</p>
-        <h1>Things I have built.</h1>
+        <h1>Things I’ve built and worked on.</h1>
         <p>
-          A small collection of school work, side projects, and experiments. Right now, it starts
-          with a Discord bot I made to check a Minecraft server from chat.
+          This is a small collection of school work, side projects, and experiments. Right now, it
+          starts with a Discord bot I made to check a Minecraft server directly from chat.
         </p>
       </section>
 
       <section className="project-feature">
         <article className="project-card large">
-          <div className="project-kicker">Discord bot</div>
+          <div className="project-kicker">Discord Bot</div>
           <h2>MC Server Tracking Discord Bot</h2>
           <p>
             I made this bot so people in a Discord server could quickly check whether a Minecraft
-            server was online. A user runs <code>/smpstatus</code>, the bot asks the mcsrvstat.us
-            API for the current server state, and then it posts the result back into chat.
+            server was online without having to leave chat.
           </p>
           <p>
-            The first version is deliberately simple: one command, one server address, and a clear
-            online or offline response. It also gave me a chance to work with Discord commands,
+            A user runs <code>/smpstatus</code>, the bot sends a request to the mcsrvstat.us API,
+            then returns the server status in Discord. The first version is intentionally simple:
+            one command, one server address, and a clear online or offline response.
+          </p>
+          <p>
+            Even though it is a small project, it helped me practice working with Discord commands,
             environment variables, external API requests, and basic error handling in Python.
           </p>
           <div className="project-actions">
@@ -500,18 +514,20 @@ function ProjectsPage() {
 
       <section className="project-card portfolio-project">
         <div className="project-kicker">Website</div>
-        <h2>This portfolio site</h2>
+        <h2>This Portfolio Site</h2>
         <p>
-          I built this site using React, Vite, CSS, and GitHub Pages. The goal was to keep it simple
-          and focused, without it feeling like a generic template.
+          I built this site using React, Vite, CSS, and GitHub Pages. The goal was to make a simple
+          portfolio for my projects without making it feel like a generic template.
         </p>
         <p>
-          The background uses a WebGL shader adapted from another project, integrated into the
-          layout and adjusted to fit the design.
+          The background uses a WebGL shader adapted from another project. I integrated it into the
+          site, adjusted how it fits with the layout, and built the page content around it so it
+          feels like part of the design instead of just a background effect.
         </p>
         <p>
-          AI tools were used during parts of the website development process, mainly for assistance
-          and iteration, but the structure and implementation were handled by me.
+          I used AI tools during parts of the website development process, mainly for
+          troubleshooting, writing support, and iteration. The final structure, implementation
+          choices, and project direction were handled by me.
         </p>
         <div className="project-actions">
           <a className="button primary" href={siteRepoUrl} target="_blank" rel="noreferrer">
